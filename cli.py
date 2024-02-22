@@ -8,7 +8,7 @@ from processor import Processor
 
 def setup_request_commandline() -> Request:
     parser = argparse.ArgumentParser()
-    parser.add_argument("-o", "--output", default=OutputMode.CSV,
+    parser.add_argument("-o", "--output", default=OutputMode.CSV.value,
                         help="The output mode of the program. This is 'csv' by "
                              "default, but can be set to 'json' as well.")
     parser.add_argument("-i", "--input", help="The input file to be parsed and processed")

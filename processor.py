@@ -2,8 +2,10 @@ from datetime import datetime
 
 from handlers.word_generator import WordGenerator
 from handlers.name_generator import NameGenerator
+from handlers.output_handler import OutputHandler
 from handlers.handler_interface import HandlerInterface
 from models.request import Request
+from helpers.date_helper import DateHelper
 import pandas as pd
 
 
@@ -27,6 +29,11 @@ class Processor:
             word_generator = WordGenerator()
             name_generator = NameGenerator()
             word_generator.set_handler(name_generator)
+
+            if self.request.output_mode is not None:
+                output_handler = OutputHandler()
+                name_generator.set_handler(output_handler)
+
             return word_generator
         else:
             return None
@@ -35,7 +42,7 @@ class Processor:
         if self.request.is_data_provided:
             self.request.data = pd.read_csv(self.request.data)
         else:
-            timestamp = int(datetime.now().timestamp())
+            timestamp = DateHelper.get_timestamp()
             data = [f"{i}_{timestamp}" for i in range(1, self.request.size + 1)]
             temp_df = pd.DataFrame(data, columns=["UID"])
             self.request.data = temp_df
