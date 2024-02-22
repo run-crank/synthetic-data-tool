@@ -15,6 +15,7 @@ class Request:
         self.test_name = test_name
         self.size = size
         self.data = data
+        self.is_data_provided = data is not None
 
     def __str__(self):
         return f"Request(input_file={self.input_file}, output_mode={self.output_mode}, test_name={self.test_name}, size={self.size}, data={self.data})"
