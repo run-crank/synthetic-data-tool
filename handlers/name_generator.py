@@ -2,13 +2,13 @@ import pandas as pd
 
 from handlers.base_generator import BaseGenerator
 from models.request import Request
-from random_word import RandomWords
+from faker import Faker
 
 
-class WordGenerator(BaseGenerator):
+class NameGenerator(BaseGenerator):
     def __init__(self, next_handler=None):
-        super().__init__("word", next_handler)
-        self.generator = RandomWords()
+        super().__init__("name", next_handler)
+        self.generator = Faker()
 
     def handle(self, request: Request):
         if not request.is_data_provided:
@@ -22,6 +22,6 @@ class WordGenerator(BaseGenerator):
             return
 
     def generate_data(self, request: Request):
-        data = [self.generator.get_random_word() for _ in range(request.size)]
+        data = [self.generator.name() for _ in range(request.size)]
         temp_df = pd.DataFrame(data, columns=[self.column_name])
         request.data = pd.concat([request.data, temp_df], axis=1)

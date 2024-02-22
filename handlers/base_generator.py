@@ -9,10 +9,9 @@ class BaseGenerator(HandlerInterface):
     Base class for all generators. Generators are handlers that are responsible for generating the data.
     """
 
-    def __init__(self, regex_key, column_name, next_handler=None):
+    def __init__(self, column_name, next_handler=None):
         super().__init__(next_handler)
         self.next_handler = next_handler
-        self.key = regex_key
         self.column_name = column_name
 
     @abstractmethod

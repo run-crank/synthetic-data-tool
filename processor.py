@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from handlers.word_generator import WordGenerator
+from handlers.name_generator import NameGenerator
 from handlers.handler_interface import HandlerInterface
 from models.request import Request
 import pandas as pd
@@ -8,8 +9,8 @@ import pandas as pd
 
 class Processor:
     def __init__(self, request: Request):
-        self.handler = self.__initialize_handler_chain()
         self.request = request
+        self.handler = self.__initialize_handler_chain()
 
     def process(self):
         self.__initialize_request()
@@ -18,13 +19,17 @@ class Processor:
         except Exception as e:
             print(f"Error! Could not execute request.\n Error message: {e}")
 
-    @staticmethod
-    def __initialize_handler_chain() -> HandlerInterface:
+    def __initialize_handler_chain(self) -> HandlerInterface:
         """
         Initializes the chain of handlers for processing the request.
         """
-        word_generator = WordGenerator()
-        return word_generator
+        if not self.request.is_data_provided:
+            word_generator = WordGenerator()
+            name_generator = NameGenerator()
+            word_generator.set_handler(name_generator)
+            return word_generator
+        else:
+            return None
 
     def __initialize_request(self):
         if self.request.is_data_provided:
