@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from models.request import Request
 
 
-class BaseHandler(ABC):
+class HandlerInterface(ABC):
     def __init__(self, next_handler=None):
         self.next_handler = next_handler
 

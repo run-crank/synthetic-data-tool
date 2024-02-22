@@ -1,4 +1,4 @@
-from handlers.base_handler import BaseHandler
+from handlers.handler_interface import HandlerInterface
 from models.request import Request
 
 
@@ -12,5 +12,5 @@ class Processor:
         except Exception as e:
             print(f"Error! Could not execute request.\n Error message: {e}")
 
-    def __initialize_handler_chain(self) -> BaseHandler:
+    def __initialize_handler_chain(self) -> HandlerInterface:
         pass
