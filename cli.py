@@ -3,6 +3,7 @@ import argparse
 from enums.output_mode import OutputMode
 import helpers.constants as constant
 from models.request import Request
+from processor import Processor
 
 
 def setup_request_commandline() -> Request:
@@ -37,6 +38,8 @@ def check_request_validity(request: Request):
 
 def main():
     request = setup_request_commandline()
+    processor = Processor(request)
+    processor.process()
 
 
 if __name__ == '__main__':
