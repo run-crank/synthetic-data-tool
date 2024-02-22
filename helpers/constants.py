@@ -1,1 +1,2 @@
 DEFAULT_DATA_SIZE = 50
+GENERIC_TEST_NAME = "generic_test"
