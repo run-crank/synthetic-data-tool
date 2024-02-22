@@ -1,13 +1,14 @@
 import pandas as pd
 
-from handlers.base_generator import BaseGenerator
+from enums.regex_keys import RegexKeys
+from handlers.generators.base_generator import BaseGenerator
 from models.request import Request
 from faker import Faker
 
 
 class NameGenerator(BaseGenerator):
     def __init__(self, next_handler=None):
-        super().__init__("name", next_handler)
+        super().__init__(RegexKeys.NAME.value, next_handler)
         self.generator = Faker()
 
     def handle(self, request: Request):

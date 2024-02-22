@@ -1,15 +1,14 @@
-from datetime import datetime
-
-from handlers.word_generator import WordGenerator
-from handlers.name_generator import NameGenerator
+from handlers.generators.word_generator import WordGenerator
+from handlers.generators.name_generator import NameGenerator
 from handlers.output_handler import OutputHandler
 from handlers.handler_interface import HandlerInterface
+from handlers.processors.process_handler import ProcessHandler
 from models.request import Request
 from helpers.date_helper import DateHelper
 import pandas as pd
 
 
-class Processor:
+class HandlerInitializer:
     def __init__(self, request: Request):
         self.request = request
         self.handler = self.__initialize_handler_chain()
@@ -25,18 +24,22 @@ class Processor:
         """
         Initializes the chain of handlers for processing the request.
         """
-        if not self.request.is_data_provided:
-            word_generator = WordGenerator()
-            name_generator = NameGenerator()
-            word_generator.set_handler(name_generator)
+        word_generator = WordGenerator()
+        name_generator = NameGenerator()
+        output_handler = OutputHandler()
+        process_handler = ProcessHandler()
 
-            if self.request.output_mode is not None:
-                output_handler = OutputHandler()
-                name_generator.set_handler(output_handler)
+        # Common code for both branches
+        word_generator.set_handler(name_generator)
+        name_generator.set_handler(output_handler)
 
+        if self.request.input_file is not None and not self.request.is_data_provided:
+            output_handler.set_handler(process_handler)
+            return word_generator
+        elif self.request.input_file is None and not self.request.is_data_provided:
             return word_generator
         else:
-            return None
+            return process_handler
 
     def __initialize_request(self):
         if self.request.is_data_provided:

@@ -1,13 +1,14 @@
 import pandas as pd
 
-from handlers.base_generator import BaseGenerator
+from enums.regex_keys import RegexKeys
+from handlers.generators.base_generator import BaseGenerator
 from models.request import Request
 from random_word import RandomWords
 
 
 class WordGenerator(BaseGenerator):
     def __init__(self, next_handler=None):
-        super().__init__("word", next_handler)
+        super().__init__(RegexKeys.WORD.value, next_handler)
         self.generator = RandomWords()
 
     def handle(self, request: Request):
