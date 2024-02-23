@@ -54,10 +54,14 @@ class ProcessHandler(HandlerInterface):
     def __initialize_attributes(self, request: Request):
         name_processor = TextProcessor(RegexKeys.NAME.value)
         word_processor = TextProcessor(RegexKeys.WORD.value)
+        phone_processor = TextProcessor(RegexKeys.PHONE.value)
+        email_processor = TextProcessor(RegexKeys.EMAIL.value)
 
         all_processors = [
             name_processor,
-            word_processor
+            word_processor,
+            phone_processor,
+            email_processor
         ]
 
         processors = []
