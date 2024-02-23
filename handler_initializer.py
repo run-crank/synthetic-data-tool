@@ -1,3 +1,4 @@
+from handlers.generators.email_generator import EmailGenerator
 from handlers.generators.word_generator import WordGenerator
 from handlers.generators.name_generator import NameGenerator
 from handlers.output_handler import OutputHandler
@@ -26,12 +27,14 @@ class HandlerInitializer:
         """
         word_generator = WordGenerator()
         name_generator = NameGenerator()
+        email_generator = EmailGenerator()
         output_handler = OutputHandler()
         process_handler = ProcessHandler()
 
         # Common code for both branches
         word_generator.set_handler(name_generator)
-        name_generator.set_handler(output_handler)
+        name_generator.set_handler(email_generator)
+        email_generator.set_handler(output_handler)
 
         if self.request.input_file is not None and not self.request.is_data_provided:
             output_handler.set_handler(process_handler)
