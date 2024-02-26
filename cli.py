@@ -3,11 +3,12 @@ import argparse
 from enums.output_mode import OutputMode
 import helpers.constants as constant
 from models.request import Request
+from handler_initializer import HandlerInitializer
 
 
 def setup_request_commandline() -> Request:
     parser = argparse.ArgumentParser()
-    parser.add_argument("-o", "--output", default=OutputMode.CSV,
+    parser.add_argument("-o", "--output", default=OutputMode.CSV.value,
                         help="The output mode of the program. This is 'csv' by "
                              "default, but can be set to 'json' as well.")
     parser.add_argument("-i", "--input", help="The input file to be parsed and processed")
@@ -37,6 +38,8 @@ def check_request_validity(request: Request):
 
 def main():
     request = setup_request_commandline()
+    processor = HandlerInitializer(request)
+    processor.process()
 
 
 if __name__ == '__main__':
