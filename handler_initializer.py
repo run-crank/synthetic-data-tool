@@ -1,3 +1,4 @@
+from handlers.generators.address_generator import AddressGenerator
 from handlers.generators.email_generator import EmailGenerator
 from handlers.generators.phone_generator import PhoneGenerator
 from handlers.generators.word_generator import WordGenerator
@@ -30,6 +31,7 @@ class HandlerInitializer:
         name_generator = NameGenerator()
         email_generator = EmailGenerator()
         phone_generator = PhoneGenerator()
+        address_generator = AddressGenerator()
         output_handler = OutputHandler()
         process_handler = ProcessHandler()
 
@@ -37,7 +39,8 @@ class HandlerInitializer:
         word_generator.set_handler(name_generator)
         name_generator.set_handler(email_generator)
         email_generator.set_handler(phone_generator)
-        phone_generator.set_handler(output_handler)
+        phone_generator.set_handler(address_generator)
+        address_generator.set_handler(output_handler)
 
         if self.request.input_file is not None and not self.request.is_data_provided:
             output_handler.set_handler(process_handler)
