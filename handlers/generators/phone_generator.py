@@ -10,7 +10,7 @@ from helpers.date_helper import DateHelper
 
 class PhoneGenerator(BaseGenerator):
     def __init__(self, next_handler=None):
-        super().__init__(RegexKeys.EMAIL.value, next_handler)
+        super().__init__(RegexKeys.PHONE.value, next_handler)
 
     def handle(self, request: Request):
         if not request.is_data_provided:
