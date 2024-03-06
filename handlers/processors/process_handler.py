@@ -37,7 +37,7 @@ class ProcessHandler(HandlerInterface):
         else:
             return
 
-    def __process_data(self, file_string) -> str:
+    def __process_data(self, file_string, request) -> str:
         result = ''
         start = 0
         for m in re.finditer(self.regex_pattern, file_string):
