@@ -9,4 +9,5 @@ class RegexKeys(enum.Enum):
     WORD = r"{{any.word}}"
     EMAIL = r"{{any.email}}"
     PHONE = r"{{any.phone}}"
+    ADDRESS = r"{{any.address}}"
 

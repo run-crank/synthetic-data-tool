@@ -56,12 +56,14 @@ class ProcessHandler(HandlerInterface):
         word_processor = TextProcessor(RegexKeys.WORD.value)
         phone_processor = TextProcessor(RegexKeys.PHONE.value)
         email_processor = TextProcessor(RegexKeys.EMAIL.value)
+        address_processor = TextProcessor(RegexKeys.ADDRESS.value)
 
         all_processors = [
             name_processor,
             word_processor,
             phone_processor,
-            email_processor
+            email_processor,
+            address_processor
         ]
 
         processors = []
