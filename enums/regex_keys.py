@@ -10,4 +10,5 @@ class RegexKeys(enum.Enum):
     EMAIL = r"{{any.email}}"
     PHONE = r"{{any.phone}}"
     ADDRESS = r"{{any.address}}"
+    DATE = r"\{\{date\(([^()]+)\)\}\}"
 

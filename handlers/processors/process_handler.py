@@ -3,6 +3,7 @@ from handlers.handler_interface import HandlerInterface
 from models.request import Request
 from handlers.processors.text_processor import TextProcessor
 import re
+from handlers.processors.date_processor import DateProcessor
 
 
 class ProcessHandler(HandlerInterface):
@@ -36,13 +37,19 @@ class ProcessHandler(HandlerInterface):
         else:
             return
 
-    def __process_data(self, file_string, request) -> str:
+    def __process_data(self, file_string) -> str:
         result = ''
         start = 0
         for m in re.finditer(self.regex_pattern, file_string):
             matched_regex = m.group()
-            processor = self.processor_map[matched_regex]
-            data = processor.get_data()
+
+            if "date" in matched_regex:
+                processor = self.processor_map[RegexKeys.DATE.value]
+                data = processor.get_data(matched_regex)
+            else:
+                processor = self.processor_map[matched_regex]
+                data = processor.get_data()
+
             end, new_start = m.span()
             result += file_string[start:end]
             rep = data
@@ -57,13 +64,15 @@ class ProcessHandler(HandlerInterface):
         phone_processor = TextProcessor(RegexKeys.PHONE.value)
         email_processor = TextProcessor(RegexKeys.EMAIL.value)
         address_processor = TextProcessor(RegexKeys.ADDRESS.value)
+        date_processor = DateProcessor(RegexKeys.DATE.value)
 
         all_processors = [
             name_processor,
             word_processor,
             phone_processor,
             email_processor,
-            address_processor
+            address_processor,
+            date_processor
         ]
 
         processors = []
@@ -71,6 +80,8 @@ class ProcessHandler(HandlerInterface):
             if p.regex_key in request.data.columns:
                 processors.append(p)
                 p.set_data(request.data[p.regex_key])
+            if p.regex_key == RegexKeys.DATE.value:
+                processors.append(p)
 
         self.regex_keys = [p.regex_key for p in processors]
         self.regex_pattern = r"((" + '|'.join(self.regex_keys) + r"))"
