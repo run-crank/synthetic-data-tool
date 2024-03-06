@@ -79,9 +79,8 @@ class ProcessHandler(HandlerInterface):
         for p in all_processors:
             if p.regex_key in request.data.columns:
                 processors.append(p)
-                p.set_data(request.data[p.regex_key])
-            if p.regex_key == RegexKeys.DATE.value:
-                processors.append(p)
+                if p.regex_key != RegexKeys.DATE.value:
+                    p.set_data(request.data[p.regex_key])
 
         self.regex_keys = [p.regex_key for p in processors]
         self.regex_pattern = r"((" + '|'.join(self.regex_keys) + r"))"
