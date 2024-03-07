@@ -52,25 +52,13 @@ class ProcessHandler(HandlerInterface):
         return result
 
     def __initialize_attributes(self, request: Request):
-        name_processor = TextProcessor(RegexKeys.NAME.value)
-        word_processor = TextProcessor(RegexKeys.WORD.value)
-        phone_processor = TextProcessor(RegexKeys.PHONE.value)
-        email_processor = TextProcessor(RegexKeys.EMAIL.value)
-        address_processor = TextProcessor(RegexKeys.ADDRESS.value)
-
-        all_processors = [
-            name_processor,
-            word_processor,
-            phone_processor,
-            email_processor,
-            address_processor
-        ]
-
         processors = []
-        for p in all_processors:
-            if p.regex_key in request.data.columns:
-                processors.append(p)
-                p.set_data(request.data[p.regex_key])
+
+        for regex_key in request.data.columns:
+            if re.match(r"{{.*}}", regex_key):
+                temp = TextProcessor(regex_key)
+                temp.set_data(request.data[regex_key])
+                processors.append(temp)
 
         self.regex_keys = [p.regex_key for p in processors]
         self.regex_pattern = r"((" + '|'.join(self.regex_keys) + r"))"
