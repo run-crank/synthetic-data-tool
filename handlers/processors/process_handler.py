@@ -3,6 +3,7 @@ from handlers.handler_interface import HandlerInterface
 from models.request import Request
 from handlers.processors.text_processor import TextProcessor
 import re
+from handlers.processors.date_processor import DateProcessor
 
 
 class ProcessHandler(HandlerInterface):
@@ -41,8 +42,14 @@ class ProcessHandler(HandlerInterface):
         start = 0
         for m in re.finditer(self.regex_pattern, file_string):
             matched_regex = m.group()
-            processor = self.processor_map[matched_regex]
-            data = processor.get_data()
+
+            if "date" in matched_regex:
+                processor = self.processor_map[RegexKeys.DATE.value]
+                data = processor.get_data(matched_regex)
+            else:
+                processor = self.processor_map[matched_regex]
+                data = processor.get_data()
+
             end, new_start = m.span()
             result += file_string[start:end]
             rep = data
@@ -52,6 +59,7 @@ class ProcessHandler(HandlerInterface):
         return result
 
     def __initialize_attributes(self, request: Request):
+
         processors = []
 
         for regex_key in request.data.columns:
@@ -59,6 +67,10 @@ class ProcessHandler(HandlerInterface):
                 temp = TextProcessor(regex_key)
                 temp.set_data(request.data[regex_key])
                 processors.append(temp)
+                
+        date_processor = DateProcessor(RegexKeys.DATE.value)
+        
+        processors.append(date_processor)
 
         self.regex_keys = [p.regex_key for p in processors]
         self.regex_pattern = r"((" + '|'.join(self.regex_keys) + r"))"
