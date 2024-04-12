@@ -8,6 +8,24 @@ SDT provides users with the capability to generate random datasets containing pr
 
 - **Text File Processing:** SDT can process text files provided by the user as input. It replaces instances of keys with random data picked from the generated dataset or any dataset provided by the user.
 
+## Local Environment Setup
+
+### Prerequisite
+
+- Install Python >3.9
+
+### Installation
+
+Create virtual envirnoment
+```
+pip install virtualenv 
+virtualenv venv
+source venv/bin/activate
+```
+Install packages
+```
+pip install -r requirements.txt
+```
 ## CLI Argument Reference
 
 | Argument       | Default Value     | Description                                                                                              |
@@ -22,13 +40,13 @@ SDT provides users with the capability to generate random datasets containing pr
 
 Generates a dataset of size 100 in csv format
 ```
-sdt.exe -o csv -s 100
+python cli.py -o csv -s 100
 ```
 Generate a dataset and use it to process a yaml file
 ```
-sdt.exe -i test.crank.yml // outputs processed_test.crank.yml and dataset in csv format
+python cli.py -i test.crank.yml // outputs processed_test.crank.yml and dataset in csv format
 ```
 Use an existing dataset to process a yaml file
 ```
-sdt.exe -i test.crank.yml -d random_dataset.csv // outputs processed_test.crank.yml
+python cli.py -i test.crank.yml -d random_dataset.csv // outputs processed_test.crank.yml
 ```
